@@ -1,11 +1,15 @@
 import { Application } from "https://deno.land/x/oak/mod.ts"
+import { config } from "https://deno.land/x/dotenv/mod.ts";
+import router from "./routes/router.ts"
 
 const app = new Application()
 
-app.use((ctx) => {
-  ctx.response.body = "hello world"
-})
+const HOST = config().HOST
+const PORT = config().PORT
 
-console.log("running on server")
+console.log(`running on ${HOST}:${PORT}`)
 
-await app.listen({ port: 8080 })
+app.use(router.routes())
+app.use(router.allowedMethods())
+
+await app.listen(`${HOST}:${PORT}`)
