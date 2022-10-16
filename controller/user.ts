@@ -1,4 +1,4 @@
-import { IUser } from "../model/user";
+import { IUser } from "../model/user.ts";
 
 let users: Array<IUser> = [
   {
@@ -17,7 +17,7 @@ let users: Array<IUser> = [
   },
   {
     id: 3,
-    name: "Elvis Prayley operation",
+    name: "Elvis Presley operation",
     email: "elvis@email.com",
     create_at: new Date("2022-02-19"),
     update_at: new Date("2022-02-19")
@@ -28,4 +28,21 @@ const getUsers = ({ response }: { response: any }) => {
   response.body = users;
 };
 
-export {getUsers}
+const getUserByid = ({ params, response }: { params: { id: string }, response: any }) => {
+
+  const user: IUser | undefined = users.find((it) => {
+    return it.id === Number(params.id)
+  })
+
+
+  if(user) {
+    response.status = 200
+    response.body = user
+  } else {
+    response.status = 404
+    response.body = { message: "user not found" }
+  }
+
+}
+
+export { getUsers, getUserByid }
